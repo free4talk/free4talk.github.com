@@ -1,25 +1,44 @@
 <!doctype html>
 <title>Site Maintenance</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
     body {
         text-align: center;
-        padding: 150px;
     }
 
     h1 {
         font-size: 50px;
+        text-align: center;
+        margin: 0;
+        padding: 20px;
     }
 
     body {
         font: 20px Helvetica, sans-serif;
         color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    .root {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: -webkit-linear-gradient(-45deg, #8363a1 0%, #74a8c3 100%);
+        background: linear-gradient(135deg, #8363a1 0%, #74a8c3 100%);
+        padding: 0 20px;
     }
 
     article {
         display: block;
-        text-align: left;
-        width: 650px;
+        text-align: center;
         margin: 0 auto;
+        color: white;
     }
 
     a {
@@ -31,31 +50,42 @@
         color: #333;
         text-decoration: none;
     }
+
+    .iFrame {
+        width: 100%;
+        min-height: 350px;
+    }
+
+    .time {
+        font-size: 14px;
+        font-style: italic;
+    }
 </style>
 
-<article>
+<article class="root">
     <h1>We&rsquo;ll be back soon!</h1>
     <div>
         <p>Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment.
-        <p>
-            This page will be reloaded after <span id="second" /> seconds
-        </p>
-        <p>&mdash; Free4Talk </p>
     </div>
+    <iframe class="iFrame"
+            title="Free4Talk Public Chat"
+            src="https://free4talk.chatovod.com/?disableFocus=1"
+            frame-border="0"></iframe>
+    <p class="time">This page will be reloaded automatically after <span id="second"></span> seconds</p>
 </article>
 
 <script>
     function reloadFunction() {
         const from = Date.now();
 
-        const timeout = 30;
+        const timeout = 60;
 
         function loop() {
             const seconds = Math.floor((Date.now() - from) / 1000);
             const span = document.getElementById('second');
             span.innerHTML = timeout - seconds;
             if (seconds >= timeout) {
-                return window.location.reload(true);
+                return window.parent.location.reload(true);
             }
             return setTimeout(loop, 500);
         }
