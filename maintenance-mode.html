@@ -71,7 +71,8 @@
             title="Free4Talk Public Chat"
             src="https://free4talk.chatovod.com/?disableFocus=1"
             frame-border="0"></iframe>
-    <a href="http://dev.free4talk.com/">Free4Talk</a>
+    <p class="time">This page will be reloaded automatically after <span id="second"></span> seconds
+    </p>
 </article>
 
 <script>
@@ -85,7 +86,8 @@
             const span = document.getElementById('second');
             span.innerHTML = timeout - seconds;
             if (seconds >= timeout) {
-                return window.parent.location.reload(true);
+                window.top.location.href = window.location.href;
+                return;
             }
             return setTimeout(loop, 500);
         }
