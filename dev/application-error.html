@@ -1,0 +1,102 @@
+<!doctype html>
+<title>Application error | Free4Talk</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+    body {
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 50px;
+        text-align: center;
+        margin: 0;
+        padding: 20px;
+    }
+
+    body {
+        font: 20px Helvetica, sans-serif;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    .root {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: -webkit-linear-gradient(-45deg, #8363a1 0%, #74a8c3 100%);
+        background: linear-gradient(135deg, #8363a1 0%, #74a8c3 100%);
+        padding: 0 20px;
+    }
+
+    article {
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+        color: white;
+    }
+
+    a {
+        color: #dc8100;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #333;
+        text-decoration: none;
+    }
+
+    .iFrame {
+        width: 100%;
+        min-height: 350px;
+    }
+
+    .time {
+        font-size: 14px;
+        font-style: italic;
+    }
+</style>
+
+<article class="root">
+    <h1>Application error</h1>
+    <div>
+        <p>An error occurred in the application and your page could not be served.</p>
+        <p>If you are the application owner, check your logs for details.</p>
+    </div>
+    <iframe class="iFrame"
+            title="Free4Talk Public Chat"
+            src="https://free4talk.chatovod.com/?disableFocus=1"
+            frame-border="0"></iframe>
+    </p>
+</article>
+
+<script>
+    const host = 'https://dev-free4talk.herokuapp.com/';
+    const dest = 'http://dev.free4talk.com/';
+    const timeout = 30000;
+
+    function ping() {
+        fetch(host + 'ping', {
+            method: 'POST',
+            cache: 'no-cache'
+        }).then(function (response) {
+            return response.text()
+                .then(function (text) {
+                    if (text !== 'OK') {
+                        throw new Error('Wrong OK code: ' + text)
+                    }
+                    window.top.location.href = dest;
+                });
+        }).catch(function (err) {
+            setTimeout(ping, timeout);
+            console.log(err);
+        })
+    }
+
+    ping();
+</script>
