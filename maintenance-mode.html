@@ -76,24 +76,26 @@
 </article>
 
 <script>
-    function reloadFunction() {
-        const from = Date.now();
+    const host = 'http://dev.free4talk.com';
+    const timeout = 30000;
 
-        const timeout = 30;
-
-        function loop() {
-            const seconds = Math.floor((Date.now() - from) / 1000);
-            const span = document.getElementById('second');
-            span.innerHTML = timeout - seconds;
-            if (seconds >= timeout) {
-                window.top.location.href = 'http://www.free4talk.com/';
-                return;
-            }
-            return setTimeout(loop, 500);
-        }
-
-        loop();
+    function ping() {
+        fetch(host + '/ping', {
+            method: 'POST',
+            cache: 'no-cache'
+        }).then(function (response) {
+            return response.text()
+                .then(function (text) {
+                    if (text !== 'OK') {
+                        throw new Error('Wrong OK code: ' + text)
+                    }
+                    window.top.location.href = host;
+                });
+        }).catch(function (err) {
+            setTimeout(ping, timeout);
+            console.log(err);
+        })
     }
 
-    reloadFunction();
+    ping();
 </script>
